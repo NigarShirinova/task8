@@ -18,7 +18,7 @@ namespace Test
             Console.WriteLine("task5:Gonderilmis bir string parametrni tersine qaytaran method yazin.");
             Console.WriteLine(ReverseString("salam"));
             Console.WriteLine("task6:Methoda bir int parametr oturulur, eger o variable 7e bolunurse print edilsin ki 7e bolunur,bolunmurse hemin variable en yaxin ededi qaytarsin.");
-            DivideTo7(12);
+            DivideTo7(20);
             Console.WriteLine("task7:Overload - bir birine overload olan iki metod yazin hansi ki biri kvadratinb perimetrini digeri ise ucbucaqlinin perimetrini tapsin");
             Console.WriteLine(FindPerimeter(4));
             Console.WriteLine(FindPerimeter(4,5,6));
@@ -65,6 +65,7 @@ namespace Test
 
         public static void DivideTo7(int num)
         {
+            int bolunen = 0;
             if(num %7 == 0)
             {
                 Console.WriteLine("7-e bolunur");
@@ -75,9 +76,17 @@ namespace Test
                 {
                     if(i % 7 == 0)
                     {
-                        Console.WriteLine(i);
+                        bolunen = i;
                         break;
                     }
+                }
+                if( num - bolunen > bolunen +7 - num)
+                {
+                    Console.WriteLine(bolunen +7 );
+                }
+                else
+                {
+                    Console.WriteLine(bolunen );
                 }
             }
         }
