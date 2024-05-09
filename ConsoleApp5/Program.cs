@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Test
 {
@@ -6,114 +10,286 @@ namespace Test
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("task1:Gonderilmis iki int parametrnin hasilini tapan method yazin.");
-            Console.WriteLine(FindProduct(10, 30));
-            Console.WriteLine("task2:Gonderilmis int parametrnin kvadratini tapan method yazin.");
-            Console.WriteLine(FindSquare(10));
-            Console.WriteLine("task3:.Gonderilmis bir olculu array parametrindeki elementlerin cemini tapan method yazin.");
-            int[] array = { 1, 2, 3, 5 };
-            Console.WriteLine(FindSum(array));
-            Console.WriteLine("task4:Iki string (name, surname) parametrinin xosgelmisen mesajini qaytaran method yazin.");
-            WriteWelcome("Nigar", "Shirinova");
-            Console.WriteLine("task5:Gonderilmis bir string parametrni tersine qaytaran method yazin.");
-            Console.WriteLine(ReverseString("salam"));
-            Console.WriteLine("task6:Methoda bir int parametr oturulur, eger o variable 7e bolunurse print edilsin ki 7e bolunur,bolunmurse hemin variable en yaxin ededi qaytarsin.");
-            DivideTo7(20);
-            Console.WriteLine("task7:Overload - bir birine overload olan iki metod yazin hansi ki biri kvadratinb perimetrini digeri ise ucbucaqlinin perimetrini tapsin");
-            Console.WriteLine(FindPerimeter(4));
-            Console.WriteLine(FindPerimeter(4,5,6));
-            Console.WriteLine("task8:Bir metod yazin hansi ki o string sentence gozleyir ve netice olaraq cumlede nece dene bosluq oldugunu qaytarir");
-            Console.WriteLine(CountWhiteSpace("salam necesen          ?"));
+            Animal animal1 = new Animal("Mia", "british", " grey", 2);
+            animal1.PrintDetails();
+            
 
 
-        }
 
-        public static int FindProduct(int num1, int num2)
-        {
-            return num1*num2;
-        }
+            Building building1 = new Building("Flame towers", 100, 5);
+            building1.PrintDetails();
+            //natamam
 
-        public static int FindSquare(int num)
-        {
-            return num * num;
-        }
 
-        public static int FindSum(int[] array)
-        {
-            int sum = 0;
-            for (int i = 0; i < array.Length; i++)
+
+            Student student1 = new Student("Nigar", "Shirinova", 17, [100, 100, 100], [100, 100, 100],
+                [100, 100, 100], 100, [true, true, true, true, true]);
+            int finalResult = student1.FinalResult(); 
+            if(finalResult >= 95) { Console.WriteLine("high honor"); }
+            else if (finalResult >=85) { Console.WriteLine("honor"); }
+            else if (finalResult >= 65) { Console.WriteLine("normal"); }
+            else { Console.WriteLine("fail"); }
+            
+
+            int number1 = Convert.ToInt32(Console.ReadLine());
+            int number2 = Convert.ToInt32(Console.ReadLine());
+            signline: Console.WriteLine("isare daxil edin");
+            string sign = Console.ReadLine();
+            Calculator numbers = new Calculator(number1, number2);
+            switch (sign) 
             {
-                sum += array[i];
+                case "+":
+                    Console.WriteLine(numbers.sum(number1 , number2));
+                    break;
+                case "-":
+                    Console.WriteLine(numbers.difference(number1 , number2));
+                    break;
+                case "*":
+                    Console.WriteLine(numbers.product(number1, number2));
+                    break;
+                case "/":
+                    Console.WriteLine(numbers.division(number1,number2));
+                    break;
+                default:
+                    goto signline;
+                
+
             }
-            return sum;
+
+            
+            Gun gun1 = new Gun("sniper1", 20, 15, 40, "sniper");
+            gun1.Fire();
+            gun1.Reload();
+            gun1.ShowCase();
+  
+
+
+
+        }
+    }
+
+    public class Animal
+    {
+        public string name;
+        public string breed;
+        public string color;
+        public int age;
+
+        
+        public Animal(string name, string breed, string color, int age)
+        {
+            this.name = name;
+            this.breed = breed;
+            this.color = color;
+            this.age = age;
         }
 
-        public static void WriteWelcome(string name, string surname)
+        public void PrintDetails()
         {
-            Console.WriteLine($"Welcome, {name} {surname}");
+            Console.WriteLine($"{name}, {breed}, {color}, {age}");
+        }
+    }
+
+
+
+    public class Building
+    {
+        public string name;
+        public int height;
+        public int area;
+        public string adress;
+
+
+        public Building(string name, int height, int area, string adress)
+        {
+            this.name = name;
+            this.height = height;
+            this.area = area;
+            this.adress = adress;
+
         }
 
-        public static string ReverseString(string word)
+        public Building(string name, int height, int area)
         {
-            string reversed = string.Empty;
-            for (int i = word.Length -1 ;i >= 0;i--)
+            this.name = name;
+            this.height = height;
+            this.area = area;
+        }
+        public int FindVolume()
+        {
+            return area * height;
+        }
+
+        public void PrintDetails()
+        {
+            Console.WriteLine($"{name} , {height} , {area} , {adress} , {FindVolume()}");
+        }
+
+        
+    }
+
+
+    public class Student
+    {
+        public string name;
+        public string surname;
+        public int age;
+        public int[] homeWorkGrades;
+        public int[] projectGrades;
+        public int[] quizGrades;
+        int finalGrade;
+        public bool[] continuity;
+
+
+        public Student(string name, string surname, int age, int[] homeWorkGrades,
+            int[] projectGrades, int[] quizGrades, int finalGrade, bool[] continuity)
+        {
+            this.name = name;
+            this.surname = surname;
+            this.age = age;
+            this.homeWorkGrades = homeWorkGrades;
+            this.projectGrades = projectGrades;
+            this.quizGrades = quizGrades;
+            this.finalGrade = finalGrade;
+            this.continuity = continuity;
+        }
+
+
+        public int FindAvarage(int[] grades)
+        {
+            int totalGrade = 0;
+            foreach (int grade in grades)
             {
-                reversed += word[i];
+                totalGrade += grade;
             }
-            return reversed;
+            return totalGrade/grades.Length;
         }
 
-        public static void DivideTo7(int num)
+        public int FindCountinuity(bool[] continuity)
         {
-            int bolunen = 0;
-            if(num %7 == 0)
+            int count = 0;
+            foreach (var participation in continuity)
             {
-                Console.WriteLine("7-e bolunur");
+                if(participation)
+                    count++;
+            }
+            
+            return count*100/continuity.Length;
+        }
+
+        public int FinalResult()
+        {
+            int avarageHomeworkGrade = FindAvarage(homeWorkGrades);
+            int avarageQuizGrade = FindAvarage(quizGrades);
+            int avarageProjectGrade = FindAvarage(projectGrades);
+            int continuityGrade = FindCountinuity(continuity);
+
+            int finalResult = (avarageHomeworkGrade * 20) / 100 + avarageQuizGrade * 20 / 100 
+                + avarageProjectGrade * 20 / 100 +
+                continuityGrade * 10 / 100 + finalGrade * 30 / 100;
+            return finalResult;
+        }
+    }
+
+
+    public class Calculator
+    {
+        public int number1;
+        public int number2;
+
+        public Calculator(int number1, int number2)
+        {
+            this.number1 = number1;
+            this.number2 = number2;
+        }
+
+
+
+        public int sum(int number1 , int number2)
+        {
+            return number1 + number2;
+        }
+
+        public int product(int number1 , int number2)
+        {
+            return number1 * number2;
+        }
+
+        public int difference(int number1 , int number2)
+        {
+            return number1 - number2;
+        }
+
+        public int division(int number1 , int number2)
+        {
+            return number1 / number2;
+        }
+    }
+
+    
+    public class Gun
+    {
+        public string name;
+        public int maxCapacity;
+        public int currentBullet;
+        public int totalBullet;
+        public string type;
+
+
+        public Gun(string name, int maxCapacity, int currentBullet, int totalBullet, string type)
+        {
+            this.name = name;
+            this.maxCapacity = maxCapacity;
+            this.currentBullet = currentBullet;
+            this.totalBullet = totalBullet;
+            this.type = type;
+
+            if( type != "sniper" && type!= "assault")
+            {
+                Console.WriteLine("error");
+            }
+
+            if( currentBullet > maxCapacity)
+            {
+                Console.WriteLine("error");
+            }
+        }
+
+        public int Fire()
+        {
+            if(type == "sniper")
+            {
+                
+                currentBullet--;
+                return currentBullet;
+            }
+            else if(type == "assault")
+            {
+                
+                currentBullet = 0;
+                return currentBullet;
             }
             else
             {
-                for (int i = num; i > 0; i--)
-                {
-                    if(i % 7 == 0)
-                    {
-                        bolunen = i;
-                        break;
-                    }
-                }
-                if( num - bolunen > bolunen +7 - num)
-                {
-                    Console.WriteLine(bolunen +7 );
-                }
-                else
-                {
-                    Console.WriteLine(bolunen );
-                }
+                return 0;
             }
         }
 
-        public static int FindPerimeter(int num)
+
+        public void Reload()
         {
-            return num * 4;
-        }
-        
-        public static int FindPerimeter(int num1, int num2, int num3)
-        {
-            return num1 + num2 + num3;
+            totalBullet = totalBullet - maxCapacity + currentBullet;
+            currentBullet = maxCapacity;
         }
 
-        public static int CountWhiteSpace(string sentence)
+        public void ShowCase()
         {
-            int count = 0;
-            for (int i = 0; i < sentence.Length;i++)
-            {
-                if (sentence[i] == ' ')
-                {
-                    count++;
-                }
-            }
-            return count;
+            Console.WriteLine(name);
+            Console.WriteLine(currentBullet);
+            Console.WriteLine(totalBullet);
+            Console.WriteLine(type);
         }
-
     }
+
 
 }
